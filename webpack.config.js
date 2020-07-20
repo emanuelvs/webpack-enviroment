@@ -7,6 +7,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
+    
+    // For development enviroment
+    mode: 'development',
+    // Track information of original source code, real names
+    // usado para rastrear erros
+    devtool: 'inline-source-map',
+
+    //webpack server live reload
+    devServer: {
+        contentBase: './dist',
+    },
 
     //File path to start up
     //entry: './src/index.js',
@@ -30,7 +41,7 @@ module.exports = {
             //html document title
             title: 'Output Management'
         }),
-        new CleanWebpackPlugin(),
+        new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
     ],
 
     //For modular apps we need to install some loaders
