@@ -6,65 +6,79 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 // plugin to clear old files in /dist
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-module.exports = {
+module.exports = env => {
     
-    // For development enviroment
-    mode: 'development',
-    // Track information of original source code, real names
-    // usado para rastrear erros
-    devtool: 'inline-source-map',
+if(env.development){
+    return {
 
-    //webpack server live reload
-    devServer: {
-        contentBase: './dist',
-    },
+        // For development enviroment
+        mode: 'development',
+        // Track information of original source code, real names
+        // usado para rastrear erros
+        devtool: 'inline-source-map',
 
-    //File path to start up
-    //entry: './src/index.js',
-    
-    //Diferentes outputs
-    entry: {
-        app: './src/index.js',
-        print: './src/print.js',
-    },
-    //Bundle path and name of the file.js
-    output: {
-        //filename: 'bundle.js',
-        // [name] takes the name declared into entry options
-        filename: '[name].bundle.js',
-        path: path.resolve(__dirname, 'dist'),
-    },
+        //webpack server live reload
+        devServer: {
+            contentBase: './dist',
+        },
 
-    // Plugins to preprocess files
-    plugins: [
-        new HtmlWebpackPlugin({
-            //html document title
-            title: 'Output Management'
-        }),
-        new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
-    ],
+        //File path to start up
+        //entry: './src/index.js',
+        
+        //Diferentes outputs
+        entry: {
+            app: './src/index.ts',
+            //print: './src/print.js',
+        },
+        //Bundle path and name of the file.js
+        output: {
+            //filename: 'bundle.js',
+            // [name] takes the name declared into entry options
+            filename: '[name].[contenthash].js',
+            path: path.resolve(__dirname, 'dist'),
+        },
+        resolve: {
+            extensions: [ '.tsx', '.ts', '.js' ],
+        },
 
-    //For modular apps we need to install some loaders
-    module: {
-        rules: [
-            // Carrega css dinamicamente no javascript
-            // import "style.css"
-            {
-                test: /\.css$/,
-                use: [
-                    "style-loader",
-                    "css-loader"
-                ]
-            },
+        // Plugins to preprocess files
+        plugins: [
+            new HtmlWebpackPlugin({
+                //html document title
+                title: 'Output Management'
+            }),
+            new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
+        ],
 
-            // Carrega arquivos de imagem
-            // import Icon from './icon.png;
-            {
-                test: /\.(png|svg|jpg|gif)$/,
-                use: [
-                    'file-loader'
-                ]
-            }
-        ]
+        //For modular apps we need to install some loaders
+        module: {
+            rules: [
+                // Carrega css dinamicamente no javascript
+                // import "style.css"
+                {
+                    test: /\.css$/,
+                    use: [
+                        "style-loader",
+                        "css-loader"
+                    ]
+                },
+                {
+                    test: /\.ts?$/,
+                    use: 'ts-loader',
+                    exclude: /node_modules/,
+                },
+
+                // Carrega arquivos de imagem
+                // import Icon from './icon.png;
+                {
+                    test: /\.(png|svg|jpg|gif)$/,
+                    use: [
+                        'file-loader'
+                    ]
+                }
+            ]
+        }
     }
-};
+}
+
+}

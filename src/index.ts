@@ -1,8 +1,8 @@
-import _ from 'lodash';
-import './style.css';
+import * as _ from 'lodash';
+import './_reset.scss';
 import Icon from '../assets/icon.png';
 import Background from '../assets/background.jpg';
-import printMe from './print.js'
+import printMe from './print'
 
 function component() {
     const element = document.createElement('div');
